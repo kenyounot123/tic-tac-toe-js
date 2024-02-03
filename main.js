@@ -1,11 +1,16 @@
 //Gameboard factory wrapped inside IIFE (module)
-const board = (function gameBoard() {
+const Board = (function gameBoard() {
   //Create board 3 by 3 array
   const entries = [];
   const makeBoard = () => {
+    const allCells = document.querySelectorAll('.cell')
+    let counter = 0;
     for (let row = 0; row <= 2; row ++){
       let new_row_entry = [];
       for (let column = 0; column <= 2; column ++) {
+        const cell = allCells[counter];
+        cell.setAttribute('data-index', [row, column])
+        counter ++;
         new_row_entry.push(' ');
       };
       entries.push(new_row_entry);
@@ -91,14 +96,25 @@ const board = (function gameBoard() {
 
   //Display board to DOM
   const displayBoard = () => {
-
+    //Loop through all cells and display their value to DOM
+    const allCells = document.querySelectorAll('.cell')
+    let counter = 0;
+    for (let row = 0; row <= 2; row ++){
+      for (let column = 0; column <= 2; column ++) {
+        const cell = allCells[counter];
+        cell.textContent = entries[row][column]
+        counter ++;
+      };
+    };
   };
+
+  //Reset board
   const clearBoard = () => {
     entries.splice(0, entries.length)
     makeBoard();
   }
   
-  return { entries, winConditionSatisfied, makeBoard, clearBoard };
+  return { entries, winConditionSatisfied, makeBoard, clearBoard, displayBoard };
 })();
 
 //Player factory
@@ -107,24 +123,56 @@ const createPlayer = function (name, symbol) {
   const playerName = `${name}`;
   const playerSymbol = `${symbol}`
   //Player move selection will read mouse click target, determine which square it was on the board.entries array and then change the entry to player symbol
-  const selectEntry = (entryArray) => {
-    if (board.entries[entryArray[0]][entryArray[1]] === 'X' ||
-        board.entries[entryArray[0]][entryArray[1]] === 'O') {
-      return;
+  const selectEntry = (e) => {
+    console.log(e.target)
+    const entryArray = e.target.getAttribute('data-index').split(',')
+    if (Board.entries[entryArray[0]][entryArray[1]] === 'X' ||
+        Board.entries[entryArray[0]][entryArray[1]] === 'O') {
+      return false;
     } else {
-      board.entries[entryArray[0]][entryArray[1]] = playerSymbol
+      Board.entries[entryArray[0]][entryArray[1]] = playerSymbol;
+      return true;
     }
   };
   return {playerName, symbol, selectEntry}
 };
-board.makeBoard();
-console.log('Board Entries:', board.entries);
-const playerOne = createPlayer('Player1', 'X')
-playerOne.selectEntry([0,0])
-playerOne.selectEntry([0,1])
-playerOne.selectEntry([0,2])
-console.log('Board Entries:', board.entries);
-console.log(board.winConditionSatisfied());
-board.clearBoard();
-console.log(board)
-console.log(playerOne)
+const Game = (() => {
+  Board.makeBoard()
+  const allCells = document.querySelectorAll('.cell')
+  let playerOne = createPlayer('Player 1', 'X');
+  let playerTwo = createPlayer('Player 2', 'O');
+  let gameBoardEntries = Board.entries
+  console.log(gameBoardEntries)
+  const totalRounds = 9;
+  let rounds = 1;
+
+  function play(e) {
+    if (rounds === totalRounds) {
+      console.log('Its a tie!')
+    }
+    let current_player = rounds % 2 === 1 ? playerOne : playerTwo
+    switch (current_player) {
+      case playerOne:
+        if (playerOne.selectEntry(e)) {
+          Board.displayBoard();
+          if (Board.winConditionSatisfied()) {
+            console.log(`${current_player} is the winnder`)
+          }
+          rounds ++;
+        }
+        break;
+      case playerTwo:
+        if (playerTwo.selectEntry(e)) {
+          Board.displayBoard();
+          if (Board.winConditionSatisfied()) {
+            console.log(`${current_player} is the winnder`)
+          }
+          rounds ++;
+        }
+        break;
+    };
+  };
+  allCells.forEach(cell => {
+    cell.addEventListener('click', play) 
+  });
+})();
