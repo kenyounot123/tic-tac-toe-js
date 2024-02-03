@@ -142,9 +142,11 @@ const createPlayer = function (name, symbol) {
 };
 const Modal = (() => {
   const infoDialog = document.querySelector('.modal');
+  const modalContent = document.createElement('p')
+  infoDialog.appendChild(modalContent)
 
   function show(text) {
-    infoDialog.textContent = text;
+    modalContent.textContent = text;
     infoDialog.showModal();
   }
 

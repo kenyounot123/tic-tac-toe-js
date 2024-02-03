@@ -63,18 +63,23 @@
   position: absolute;
   left: 0;
   transform: translateX(-400%);
+  text-align: center;
 }
 .second-player-info{
+  text-align: center;
   position: absolute;
   right: 0;
   transform: translateX(400%);
 }
-.modal-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.player-symbol {
+  font-size: 5rem;
 }
 .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
   width: 400px;
   height: 200px;
   background-color: #ede0d4;
@@ -82,7 +87,11 @@
   text-align: center;
   box-shadow: 4px 5px 11px -2px rgba(0,0,0,0.75);
   border: none;
-
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
 }
 ::backdrop {
   background-color: black;
