@@ -69,3 +69,17 @@
   right: 0;
   transform: translateX(400%);
 }
+.modal {
+  width: 400px;
+  height: 200px;
+  background-color: #ede0d4;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 4px 5px 11px -2px rgba(0,0,0,0.75);
+  border: none;
+
+}
+::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}

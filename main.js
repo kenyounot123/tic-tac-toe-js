@@ -24,6 +24,8 @@ const Board = (function gameBoard() {
     }
     if (row[0] === row[1] && row[1] === row[2]) {
       return true;
+    } else {
+      return false;
     }
   };
    //Check if column has three in a row
@@ -33,6 +35,8 @@ const Board = (function gameBoard() {
     }
     if (column[0] === column[1] && column[1] === column[2]) {
       return true;
+    } else {
+      return false;
     }
   };
   //Check if diagonal has three in a row
@@ -41,15 +45,16 @@ const Board = (function gameBoard() {
       [entries[0][0], entries[1][1], entries[2][2]],
       [entries[0][2], entries[1][1], entries[2][0]]
     ]
-    if (!(diagonals[0].includes('X') && 
-          diagonals[0].includes('O') &&
-          diagonals[1].includes('X') &&
-          diagonals[1].includes('O'))) {
+    console.log('all diagonals', diagonals)
+    if (!((diagonals[0].includes('X') || 
+          diagonals[0].includes('O')) &&
+          (diagonals[1].includes('X') ||
+          diagonals[1].includes('O')))) {
       return false;
     } else if ((diagonals[0][0] === diagonals[0][1] &&
                 diagonals[0][1] === diagonals[0][2]) ||
-                diagonals[1][0] === diagonals[1][1] &&
-                diagonals[1][1] === diagonals[1][2]){
+                (diagonals[1][0] === diagonals[1][1] &&
+                diagonals[1][1] === diagonals[1][2])){
       
       return true;
     } else {
@@ -172,6 +177,8 @@ const Game = (() => {
     console.log(Board.entries)
     if (rounds === totalRounds) {
       Modal.show(`Its a Tie!`)
+      Board.clearBoard()
+      rounds = 1;
     }
     let current_player = rounds % 2 === 1 ? playerOne : playerTwo
     switch (current_player) {
@@ -179,8 +186,9 @@ const Game = (() => {
         if (playerOne.selectEntry(e)) {
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            Modal.show(`${current_player} is the winner`)
+            Modal.show(`${current_player.playerName} is the winner`)
             Board.clearBoard();
+            rounds = 1;
           }
           rounds ++;
         }
@@ -189,8 +197,9 @@ const Game = (() => {
         if (playerTwo.selectEntry(e)) {
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            Modal.show(`${current_player} is the winner`)
+            Modal.show(`${current_player.playerName} is the winner`)
             Board.clearBoard();
+            rounds = 1;
           }
           rounds ++;
         }
