@@ -21,20 +21,18 @@ const Board = (function gameBoard() {
   const rowWin = (row) => {
     if (!(row.includes('X') || row.includes('O'))) {
       return false;
-    } else if (row[0] === row[1] && row[1] === row[2]) {
+    }
+    if (row[0] === row[1] && row[1] === row[2]) {
       return true;
-    } else {
-      return false;
     }
   };
    //Check if column has three in a row
   const columnWin = (column) => {
     if (!(column.includes('X') || column.includes('O'))) {
       return false;
-    } else if (column[0] === column[1] && column[1] === column[2]) {
+    }
+    if (column[0] === column[1] && column[1] === column[2]) {
       return true;
-    } else {
-      return false;
     }
   };
   //Check if diagonal has three in a row
@@ -43,9 +41,9 @@ const Board = (function gameBoard() {
       [entries[0][0], entries[1][1], entries[2][2]],
       [entries[0][2], entries[1][1], entries[2][0]]
     ]
-    if (!(diagonals[0].includes('X') || 
-          diagonals[0].includes('O') ||
-          diagonals[1].includes('X') ||
+    if (!(diagonals[0].includes('X') && 
+          diagonals[0].includes('O') &&
+          diagonals[1].includes('X') &&
           diagonals[1].includes('O'))) {
       return false;
     } else if ((diagonals[0][0] === diagonals[0][1] &&
@@ -65,7 +63,7 @@ const Board = (function gameBoard() {
     for (let column = 0; column <= 2; column ++){
       allColumns.push([])
       for (let row = 0; row <= 2; row ++) {
-        allColumns[column].push([entries[row][column]]);
+        allColumns[column].push(entries[row][column]);
       };
     };
     return allColumns;
@@ -77,6 +75,7 @@ const Board = (function gameBoard() {
     //Loop through rows and check if win condition is satisfied
     const allRowWinArray = entries.map(row => rowWin(row));
     let entriesColumns = getAllColumns();
+    console.log('all columns:', entriesColumns)
     //Loop through columns and check if win condition is satisfied
     const allColumnWinArray = entriesColumns.map(column => columnWin(column));
     //Check diagonals
@@ -136,6 +135,29 @@ const createPlayer = function (name, symbol) {
   };
   return {playerName, symbol, selectEntry}
 };
+const Modal = (() => {
+  const infoDialog = document.querySelector('.modal');
+
+  function show(text) {
+    infoDialog.textContent = text;
+    infoDialog.showModal();
+  }
+
+  function closeModal() {
+    infoDialog.close();
+  }
+
+  window.addEventListener('click', function(event) {
+    if (event.target === infoDialog) {
+      closeModal();
+    }
+  });
+
+  return {
+    show,
+    closeModal
+  };
+})();
 const Game = (() => {
   Board.makeBoard()
   const allCells = document.querySelectorAll('.cell')
@@ -147,8 +169,9 @@ const Game = (() => {
   let rounds = 1;
 
   function play(e) {
+    console.log(Board.entries)
     if (rounds === totalRounds) {
-      console.log('Its a tie!')
+      Modal.show(`Its a Tie!`)
     }
     let current_player = rounds % 2 === 1 ? playerOne : playerTwo
     switch (current_player) {
@@ -156,7 +179,8 @@ const Game = (() => {
         if (playerOne.selectEntry(e)) {
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            console.log(`${current_player} is the winnder`)
+            Modal.show(`${current_player} is the winner`)
+            Board.clearBoard();
           }
           rounds ++;
         }
@@ -165,7 +189,8 @@ const Game = (() => {
         if (playerTwo.selectEntry(e)) {
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            console.log(`${current_player} is the winnder`)
+            Modal.show(`${current_player} is the winner`)
+            Board.clearBoard();
           }
           rounds ++;
         }
