@@ -17,7 +17,7 @@ const board = (function gameBoard() {
     } else {
       return false;
     }
-  }
+  };
    //Check if column has three in a row
   const columnWin = (column) => {
     if (column[0] === column[1] && column[1] === column[2]) {
@@ -25,7 +25,7 @@ const board = (function gameBoard() {
     } else {
       return false;
     }
-  }
+  };
   //Check if diagonal has three in a row
   const diagonalWin = () => {
     if (
@@ -38,33 +38,44 @@ const board = (function gameBoard() {
     } else {
       return false;
     }
-  }
+  };
+
+  //Return an array of each column entries
   const getAllColumns = () => {
+    let allColumns = []
     for (let column = 0; column <= 2; column ++){
-      let allColumns = [] ;
+      allColumns.push([])
       for (let row = 0; row <= 2; row ++) {
-        allColumns.push(entries[row][column]);
+        allColumns[column].push([entries[row][column]]);
       };
     };
     return allColumns;
-  }
+  };
+
+
   //Loop through all entries to see if win condition is satisfied
   const winConditionSatisfied = () => {
     //Loop through rows and check if win condition is satisfied
     const allRowWinArray = entries.map(row => rowWin(row));
     let entriesColumns = getAllColumns();
+    console.log(entriesColumns)
     //Loop through columns and check if win condition is satisfied
     const allColumnWinArray = entriesColumns.map(column => columnWin(column));
-    const diagonalWin = diagonalWin();
+    const diagonalWinSatisfied = diagonalWin();
     const rowSatisfied = allRowWinArray.every(win => win === true);
     const columnSatisfied = allColumnWinArray.every(win => win === true);
-    if (rowSatisfied === true || columnSatisfied === true || diagonalWin === true) {
-      return true
+    console.log('Row wins:', allRowWinArray);
+    console.log('Column wins:', allColumnWinArray);
+    console.log('Diagonal win:', diagonalWinSatisfied);
+    if (rowSatisfied === true || columnSatisfied === true || diagonalWinSatisfied === true) {
+      return true;
+    } else {
+      return false;
     }
-    return false
   }
   
   return { entries, winConditionSatisfied };
 })();
 
-board.winConditionSatisfied()
+board.winConditionSatisfied();
+console.log(board.winConditionSatisfied())
