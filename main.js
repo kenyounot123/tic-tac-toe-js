@@ -58,7 +58,6 @@ const board = (function gameBoard() {
     //Loop through rows and check if win condition is satisfied
     const allRowWinArray = entries.map(row => rowWin(row));
     let entriesColumns = getAllColumns();
-    console.log(entriesColumns)
     //Loop through columns and check if win condition is satisfied
     const allColumnWinArray = entriesColumns.map(column => columnWin(column));
     const diagonalWinSatisfied = diagonalWin();
@@ -77,5 +76,16 @@ const board = (function gameBoard() {
   return { entries, winConditionSatisfied };
 })();
 
+//Player factory
+const createPlayer = function (name, symbol) {
+  const playerName = `${name}`;
+  const playerSymbol = `${symbol}`
+  //Player move selection will read mouse click target, determine which square it was on the board.entries array and then change the entry to player symbol
+  const playerMove = (entry) => {
+    entry = playerSymbol
+  };
+  return {name, symbol}
+};
 board.winConditionSatisfied();
-console.log(board.winConditionSatisfied())
+console.log('Board Entries:', board.entries);
+console.log(createPlayer('Player1', 'X'))
