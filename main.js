@@ -174,34 +174,34 @@ const Game = (() => {
   let rounds = 1;
 
   function play(e) {
+    console.log(rounds)
     console.log(Board.entries)
     if (rounds === totalRounds) {
       Modal.show(`Its a Tie!`)
-      Board.clearBoard()
       rounds = 1;
     }
     let current_player = rounds % 2 === 1 ? playerOne : playerTwo
     switch (current_player) {
       case playerOne:
         if (playerOne.selectEntry(e)) {
+          rounds ++;
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            Modal.show(`${current_player.playerName} is the winner`)
+            Modal.show(`${current_player.playerName} is the winner`);
             Board.clearBoard();
             rounds = 1;
           }
-          rounds ++;
         }
         break;
       case playerTwo:
         if (playerTwo.selectEntry(e)) {
+          rounds ++;
           Board.displayBoard();
           if (Board.winConditionSatisfied()) {
-            Modal.show(`${current_player.playerName} is the winner`)
+            Modal.show(`${current_player.playerName} is the winner`);
             Board.clearBoard();
             rounds = 1;
           }
-          rounds ++;
         }
         break;
     };
@@ -209,4 +209,12 @@ const Game = (() => {
   allCells.forEach(cell => {
     cell.addEventListener('click', play) 
   });
+
+  const resetButton = document.querySelector('.reset')
+  resetButton.addEventListener('click', function() {
+    Board.clearBoard()
+    rounds = 1
+    Board.displayBoard();
+  })
 })();
+

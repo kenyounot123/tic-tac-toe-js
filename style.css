@@ -69,6 +69,11 @@
   right: 0;
   transform: translateX(400%);
 }
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .modal {
   width: 400px;
   height: 200px;
@@ -82,4 +87,20 @@
 ::backdrop {
   background-color: black;
   opacity: 0.5;
+}
+.reset {
+  position: absolute;
+  right: 0;
+  transform: translateY(-100%);
+  padding: 1em 2em;
+  background-color: #ede0d4;
+  border-radius: 10px;
+  border: none;
+  transition: background-color 0.5s ease-in-out;
+}
+.reset:active {
+  box-shadow: 1px 0px 11px -2px rgba(0,0,0,0.75);
+}
+.reset:hover {
+  background-color: red;
 }
