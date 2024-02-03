@@ -103,13 +103,19 @@ const board = (function gameBoard() {
 
 //Player factory
 const createPlayer = function (name, symbol) {
+
   const playerName = `${name}`;
   const playerSymbol = `${symbol}`
   //Player move selection will read mouse click target, determine which square it was on the board.entries array and then change the entry to player symbol
-  const selectEntry = (entry) => {
-    board.entries[entry[0]][entry[1]] = playerSymbol
+  const selectEntry = (entryArray) => {
+    if (board.entries[entryArray[0]][entryArray[1]] === 'X' ||
+        board.entries[entryArray[0]][entryArray[1]] === 'O') {
+      return;
+    } else {
+      board.entries[entryArray[0]][entryArray[1]] = playerSymbol
+    }
   };
-  return {name, symbol, selectEntry}
+  return {playerName, symbol, selectEntry}
 };
 board.makeBoard();
 console.log('Board Entries:', board.entries);
@@ -121,3 +127,4 @@ console.log('Board Entries:', board.entries);
 console.log(board.winConditionSatisfied());
 board.clearBoard();
 console.log(board)
+console.log(playerOne)

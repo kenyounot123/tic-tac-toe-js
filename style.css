@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  background-color: #ddb892;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.content-title {
+  text-align: center;
+  width: 400px;
+  margin: 0 auto;
+  font-size: 4rem;
+}
+.board-container { 
+  width: 600px;
+  border: 2px black solid;
+  height: 600px; 
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+}
+.cell {
+  border: 2px black solid;
+}
