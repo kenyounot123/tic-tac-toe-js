@@ -2,9 +2,7 @@
 class Board {
   //Create board 3 by 3 array when instantiated
   static entries = []
-  constructor() {
-    this.makeBoard();
-  }
+
   static makeBoard() {
     const allCells = document.querySelectorAll('.cell')
     let counter = 0;
@@ -48,7 +46,6 @@ class Board {
       [this.entries[0][0], this.entries[1][1], this.entries[2][2]],
       [this.entries[0][2], this.entries[1][1], this.entries[2][0]]
     ]
-    console.log('all diagonals', diagonals)
     if (!((diagonals[0].includes('X') || 
           diagonals[0].includes('O')) &&
           (diagonals[1].includes('X') ||
@@ -71,7 +68,7 @@ class Board {
     for (let column = 0; column <= 2; column ++){
       allColumns.push([])
       for (let row = 0; row <= 2; row ++) {
-        allColumns[column].push(entries[row][column]);
+        allColumns[column].push(this.entries[row][column]);
       };
     };
     return allColumns;
@@ -147,16 +144,16 @@ class Modal {
   static modalContent = document.createElement('p');
   
   static show(text) {
-    Modal.modalContent.textContent = text;
-    Modal.infoDialog.showModal();
+    this.modalContent.textContent = text;
+    this.infoDialog.showModal();
   }
 
   static closeModal() {
-    Modal.infoDialog.close();
+    this.infoDialog.close();
   }
   static initEventListeners() {
     this.infoDialog.appendChild(this.modalContent);
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', (event) => {
       if (event.target === this.infoDialog) {
         Modal.closeModal();
       }
@@ -176,7 +173,7 @@ class Game {
     this.initResetEventListener()
   }
 
-  play(e) {
+  play = (e) => {
     if (this.rounds === this.totalRounds) {
       Modal.show(`Its a Tie!`)
       this.rounds = 1;
@@ -215,7 +212,7 @@ class Game {
   }
   initResetEventListener() {
     const resetButton = document.querySelector('.reset')
-    resetButton.addEventListener('click', function() {
+    resetButton.addEventListener('click', () => {
     Board.clearBoard()
     this.rounds = 1
     Board.displayBoard();
