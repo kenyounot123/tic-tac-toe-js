@@ -5,3 +5,6 @@ View live at : [Tic tac toe](https://kenyounot123.github.io/tic-tac-toe-js/)
 * HTML
 * JavaScript
 * CSS
+## Lessons Learned
+* JavaScript constructors, classes, modules. 
+* Closures, Lexical scope, private classes.
